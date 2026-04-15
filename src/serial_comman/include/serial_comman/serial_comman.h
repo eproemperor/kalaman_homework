@@ -1,0 +1,88 @@
+/**
+ * 角度定义：
+ * - 0°：水平向右（右侧水平线）
+ * - 90°：垂直向上
+ * - 180°：水平向左
+ * - 角度范围：0° ~ 180°
+ * - 负角度表示向下：例如 -90° 表示垂直向下
+ */
+
+#ifndef SERIAL_COMMAN_H
+#define SERIAL_COMMAN_H
+
+#include <string>
+#include <chrono>          // 时间相关
+#include <memory>        
+#include <functional>    
+#include <string>         
+#include "rclcpp/rclcpp.hpp"           // ROS2核心库
+#include "std_msgs/msg/string.hpp"
+#include "serial_comman/msg/serialcom.hpp"
+
+
+
+
+class SerialComman : public rclcpp::Node{
+public:
+
+    SerialComman() : Node("serialcomman"){
+
+        //command_pub_ = this->create_pubilsher<>()
+        command_sub = this->create_subscription<serial_comman::msg::Serialcom>(
+            "control_command",
+            10,
+            std::bind(&SerialComman::SerialCallback,this,std::placeholders::_1)
+        );
+
+    }
+
+
+private:
+
+    double angle;
+    bool isshout;
+    double lastshouttime;
+
+    rclcpp::Subscription<serial_comman::msg::Serialcom>::SharedPtr command_sub;
+
+    void SerialCallback(const serial_comman::msg::Serialcom::SharedPtr msg);
+
+};
+
+class SerialComm {
+private:
+    int fd;                 // 串口文件描述符
+    std::string port_name;  // 串口设备路径
+    bool is_open;          
+    
+public:
+    SerialComm(const std::string& port = "/dev/pts/2");
+    
+    ~SerialComm();
+    
+    bool open();
+    
+    void close();
+    
+    bool isOpen() const { return is_open; }
+    
+    /**
+     *  angle 角度值（度）
+     *        - 0°：水平向右
+     *        - 90°：垂直向上
+     *        - 180°：水平向左
+     *        - 负值：向下
+     */
+    bool sendTurnCommand(float angle);
+    
+    bool sendFireCommand();
+    
+    std::string getLastError() const { return last_error; }
+    
+private:
+    std::string last_error;
+    
+    bool configurePort();
+};
+
+#endif // SERIAL_COMMAN_H

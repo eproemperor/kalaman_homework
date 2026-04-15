@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema-instance"?>
+<package format="3">
+  <name>serial_comman</name>
+  <version>0.0.1</version>
+  <description>串口通信节点，用于发送转向和开火命令</description>
+  <maintainer email="user@todo.todo">user</maintainer>
+  <license>MIT</license>
+
+  <!-- 构建工具依赖 -->
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>rosidl_default_generators</buildtool_depend> 
+
+  <!-- 运行时依赖 -->
+  <exec_depend>rosidl_default_runtime</exec_depend>  
+
+  <!-- 普通依赖 -->
+  <depend>rclcpp</depend>
+  <depend>std_msgs</depend>  <!-- 消息通常依赖 std_msgs -->
+  <depend>builtin_interfaces</depend>
+
+  <!-- 声明这个包包含 ROS2 接口 -->
+  <member_of_group>rosidl_interface_packages</member_of_group>
+
+  <!-- 测试依赖 -->
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

@@ -1,0 +1,24 @@
+vision_kalman_filter/              # 项目根目录
+│
+├── CMakeLists.txt                 # ROS 编译配置
+├── package.xml                     # ROS 包信息
+├── README.md                       # 项目说明
+│
+├── include/                        # 头文件目录
+│   └── vision_kalman_filter/       # 包名同名目录
+|       |—— openCV_tools.h          # 视觉处理类
+│       ├── kalman_filter.h         # 卡尔曼滤波器类
+|       |—— ros_image_subscriber.h  # ros图像接收类
+│       ├── serial_comm.h           # 串口通信类
+│
+├── src/                            # 源代码目录
+│   ├── kalman_filter.cpp           # 卡尔曼滤波器实现
+│   ├── serial_comm.cpp             # 串口通信实现
+|   |—— ros_image_subscriber.cpp    # ros图像接收实现
+│   └── main.cpp                    # 主节点入口
+│
+│
+│
+└── docs/                           # 文档
+    └── algorithm.md                 # 算法说明
+    
