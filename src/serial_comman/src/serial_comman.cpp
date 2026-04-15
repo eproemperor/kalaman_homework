@@ -153,16 +153,26 @@ void SerialComman::SerialCallback(const serial_comman::msg::Serialcom::SharedPtr
             msg->angle, msg->timeset
         );
 
+        std::lock_guard<std::mutex> lock(mutex_);
+
         angle = msg->angle;
         isshout = msg->isshout;
         lastshouttime = msg->timeset;
 }
 
+SerialComman::~SerialComman(){
+
+}
+
+void SerialComman::run(){
+
+}
 
 int main(int argc,char* argv[]){
 
     rclcpp::init(argc, argv);
     auto node = std::make_shared<SerialComman>();
+    node->run();
     rclcpp::spin(node);
     rclcpp::shutdown();
 

@@ -13,6 +13,7 @@
 #include <string>
 #include <chrono>          // 时间相关
 #include <memory>        
+#include <mutex>
 #include <functional>    
 #include <string>         
 #include "rclcpp/rclcpp.hpp"           // ROS2核心库
@@ -34,14 +35,20 @@ public:
             std::bind(&SerialComman::SerialCallback,this,std::placeholders::_1)
         );
 
-    }
+        RCLCPP_INFO(this->get_logger(),"串口发送节点已启动");
 
+    };
+
+    ~SerialComman();
+
+    void run();
 
 private:
 
     double angle;
     bool isshout;
     double lastshouttime;
+    std::mutex mutex_;
 
     rclcpp::Subscription<serial_comman::msg::Serialcom>::SharedPtr command_sub;
 
