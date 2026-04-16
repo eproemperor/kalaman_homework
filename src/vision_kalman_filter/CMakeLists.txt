@@ -14,7 +14,15 @@ find_package(std_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(OpenCV REQUIRED)
-find_package(image_transport REQUIRED)  # 添加 image_transport
+find_package(image_transport REQUIRED)  
+find_package(rosidl_default_generators REQUIRED)
+
+# 添加自定义消息
+rosidl_generate_interfaces(${PROJECT_NAME}
+  "msg/Serialcom.msg"
+  DEPENDENCIES
+    std_msgs  
+)
 
 # 包含目录
 include_directories(
@@ -23,7 +31,7 @@ include_directories(
 )
 
 # 创建可执行文件
-add_executable(${PROJECT_NAME}
+add_executable(kalman_filter_node
   src/main.cpp
   src/ros_image_subscriber.cpp
   src/serial_comm.cpp
@@ -31,21 +39,25 @@ add_executable(${PROJECT_NAME}
 )
 
 # 设置依赖
-ament_target_dependencies(${PROJECT_NAME}
+ament_target_dependencies(kalman_filter_node
   rclcpp
   std_msgs
   sensor_msgs
   cv_bridge
-  image_transport  # 添加 image_transport
+  image_transport  
+)
+
+target_link_libraries(kalman_filter_node
+  ${OpenCV_LIBRARIES}  # 添加OpenCV库链接
 )
 
 # 链接库
-target_link_libraries(${PROJECT_NAME}
-  ${OpenCV_LIBS}
+rosidl_target_interfaces(kalman_filter_node
+  ${PROJECT_NAME} "rosidl_typesupport_cpp"
 )
 
 # 安装可执行文件
-install(TARGETS ${PROJECT_NAME}
+install(TARGETS kalman_filter_node
   DESTINATION lib/${PROJECT_NAME}
 )
 
@@ -63,6 +75,7 @@ ament_export_dependencies(
   cv_bridge
   image_transport  
   OpenCV
+  rosidl_default_runtime
 )
 
 # ament 打包

@@ -28,6 +28,7 @@
 #include "vision_kalman_filter/openCV_tools.h"
 #include "vision_kalman_filter/kalman_filter.h"
 #include "vision_kalman_filter/serial_comm.h"
+#include "vision_kalman_filter/msg/serialcom.hpp"
 
 using namespace vision_kalman_filter;
 using namespace KalmanConfig;
@@ -114,7 +115,8 @@ struct SafetyCheckResult {
  */
 class VisionNode : public rclcpp::Node {
 private:
-    std::shared_ptr<ROSImageSubscriber> image_sub_;  // ROS图像订阅器
+    std::shared_ptr<ROSImageSubscriber> image_sub_;  
+    //rclcpp::Publisher<vision_kalman_filter::msg::Serialcom>::SharedPtr command_pub;
     
     openCV_tools cv_tools_;      
     SerialComm serial_comm_;     
@@ -169,6 +171,10 @@ public:
         image_sub_ = std::make_shared<ROSImageSubscriber>(
             std::shared_ptr<rclcpp::Node>(this, [](rclcpp::Node*){})  
         );
+        //command_pub = this->create_publisher<vision_kalman_filter::msg::Serialcom>(
+        //    "control_command",
+        //    10
+        //);
         
         serial_comm_ok_ = serial_comm_.open();
         if (!serial_comm_ok_) {
