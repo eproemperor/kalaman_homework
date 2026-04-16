@@ -77,7 +77,7 @@ bool SerialComm::configurePort() {
     options.c_iflag &= ~(INLCR | ICRNL | IGNCR);         // 禁用换行符转换
     
     // 输出模式标志
-    options.c_oflag &= ~OPOST;                           // 原始输出模式
+    options.c_oflag &= ~OPOST;                           
     
     // 设置读取超时
     options.c_cc[VMIN] = 0;     
@@ -124,10 +124,6 @@ bool SerialComm::sendTurnCommand(float angle) {
 }
 
 bool SerialComm::sendFireCommand() {
-    if (!is_open) {
-        last_error = "串口未打开";
-        return false;
-    }
     
     unsigned char buffer[1];
     buffer[0] = 0x02;  // 开火指令ID
@@ -146,33 +142,51 @@ bool SerialComm::sendFireCommand() {
     return true;
 }
 
+SerialComman::SerialComman() : Node("serialcomman"){
+
+    //command_pub_ = this->create_pubilsher<>()
+    command_sub = this->create_subscription<serial_comman::msg::Serialcom>(
+        "control_command",
+        10,
+        std::bind(&SerialComman::SerialCallback,this,std::placeholders::_1)
+    );
+
+    RCLCPP_INFO(this->get_logger(),"串口发送接收节点已启动");
+
+    Serial_ok_ = Serial_.open();
+        if (!Serial_ok_) {
+            RCLCPP_WARN(this->get_logger(), "串口打开失败，请检查权限");
+        } else {
+            RCLCPP_INFO(this->get_logger(), "串口打开成功");
+        }
+
+}
+
 void SerialComman::SerialCallback(const serial_comman::msg::Serialcom::SharedPtr msg){
         RCLCPP_INFO(
             this->get_logger(),
-            "收到开火信息，方向：%f ,时间：%f",
-            msg->angle, msg->timeset
+            "收到开火信息，方向：%f",
+            msg->angle
         );
 
         std::lock_guard<std::mutex> lock(mutex_);
 
         angle = msg->angle;
         isshout = msg->isshout;
-        lastshouttime = msg->timeset;
+
+        Serial_.sendTurnCommand(angle);
+        if(isshout){Serial_.sendFireCommand();}
 }
 
 SerialComman::~SerialComman(){
 
 }
 
-void SerialComman::run(){
-
-}
 
 int main(int argc,char* argv[]){
 
     rclcpp::init(argc, argv);
     auto node = std::make_shared<SerialComman>();
-    node->run();
     rclcpp::spin(node);
     rclcpp::shutdown();
 

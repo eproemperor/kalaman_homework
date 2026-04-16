@@ -16,7 +16,7 @@
 
   <!-- 普通依赖 -->
   <depend>rclcpp</depend>
-  <depend>std_msgs</depend>  <!-- 消息通常依赖 std_msgs -->
+  <depend>std_msgs</depend>  
   <depend>builtin_interfaces</depend>
 
   <!-- 声明这个包包含 ROS2 接口 -->

@@ -21,46 +21,12 @@
 #include "serial_comman/msg/serialcom.hpp"
 
 
-
-
-class SerialComman : public rclcpp::Node{
-public:
-
-    SerialComman() : Node("serialcomman"){
-
-        //command_pub_ = this->create_pubilsher<>()
-        command_sub = this->create_subscription<serial_comman::msg::Serialcom>(
-            "control_command",
-            10,
-            std::bind(&SerialComman::SerialCallback,this,std::placeholders::_1)
-        );
-
-        RCLCPP_INFO(this->get_logger(),"串口发送节点已启动");
-
-    };
-
-    ~SerialComman();
-
-    void run();
-
-private:
-
-    double angle;
-    bool isshout;
-    double lastshouttime;
-    std::mutex mutex_;
-
-    rclcpp::Subscription<serial_comman::msg::Serialcom>::SharedPtr command_sub;
-
-    void SerialCallback(const serial_comman::msg::Serialcom::SharedPtr msg);
-
-};
-
 class SerialComm {
 private:
     int fd;                 // 串口文件描述符
     std::string port_name;  // 串口设备路径
     bool is_open;          
+
     
 public:
     SerialComm(const std::string& port = "/dev/pts/2");
@@ -91,5 +57,34 @@ private:
     
     bool configurePort();
 };
+
+class SerialComman : public rclcpp::Node{
+public:
+
+    SerialComman();
+
+    ~SerialComman();
+
+    void run();
+
+private:
+
+    float angle;
+    bool isshout;
+    
+    std::shared_ptr<SerialComm> serial_comm_;
+
+    SerialComm Serial_;
+    bool Serial_ok_{false}; 
+
+    std::mutex mutex_; 
+
+    rclcpp::Subscription<serial_comman::msg::Serialcom>::SharedPtr command_sub;
+
+    void SerialCallback(const serial_comman::msg::Serialcom::SharedPtr msg);
+
+};
+
+
 
 #endif // SERIAL_COMMAN_H
