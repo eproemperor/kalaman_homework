@@ -1,5 +1,8 @@
-/vision_kalman_filter:
-  kalman_filter_node:
-
-/serial_comman:
-  serial_comman_node:
+/vision_node:
+  ros__parameters:
+    Q_POS: 0.4
+    Q_VEL: 0.6
+    COMPENSATION_FACTOR: 0.055
+    VEL_COMPENSATION_FACTOR: 0.917
+    ACC_COMPENSATION_FACTOR: 0.3
+    MIN_TARGET_CONFIDENCE: 0.6

@@ -855,6 +855,12 @@ int main(int argc, char** argv) {
     rclcpp::init(argc, argv);  
     
     auto node = std::make_shared<VisionNode>();  
+    node->declare_parameter<double>("Q_POS", 0.4);
+    node->declare_parameter<double>("Q_VEL", 0.6);
+    node->declare_parameter<double>("COMPENSATION_FACTOR", 0.055);
+    node->declare_parameter<double>("VEL_COMPENSATION_FACTOR", 0.917);
+    node->declare_parameter<double>("ACC_COMPENSATION_FACTOR", 0.3);
+    node->declare_parameter<double>("MIN_TARGET_CONFIDENCE", 0.6);
     node->run();  
     
     rclcpp::spin(node);  
