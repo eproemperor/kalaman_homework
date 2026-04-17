@@ -311,7 +311,9 @@ public:
                 }
             }
         }
-        
+        //for (auto& point : armor_centers) {
+        //    point.y += 6.0f;  
+        //}
         return armor_centers;
     }
     

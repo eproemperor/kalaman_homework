@@ -33,6 +33,4 @@ echo -e "${GREEN}编译成功！${NC}"
 echo -e "${YELLOW}设置环境变量...${NC}"
 source install/setup.bash
 
-# 运行程序
-echo -e "${GREEN}启动 vision_kalman_filter 节点...${NC}"
-ros2 run vision_kalman_filter kalman_filter_node
+

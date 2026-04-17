@@ -152,7 +152,7 @@ private:
     const float MAX_FIRE_DISTANCE = 650.0f;          // 最大开火距离（像素）
     const float MAX_ANGLE_ERROR = 5.0f;             
     
-    const float FRIENDLY_RADIUS = 90.0f;               // 友军判定半径（像素）
+    const float FRIENDLY_RADIUS = 100.0f;               // 友军判定半径（像素）
     const float SAFE_ANGLE_MARGIN = 10.0f;             
     const float OCCLUSION_THRESHOLD = 30.0f;           // 遮挡阈值（像素，距离小于此值视为遮挡）
     const float MIN_TARGET_CONFIDENCE = 0.6f;          // 最小目标置信度
@@ -857,6 +857,7 @@ int main(int argc, char** argv) {
     auto node = std::make_shared<VisionNode>();  
     node->declare_parameter<double>("Q_POS", 0.4);
     node->declare_parameter<double>("Q_VEL", 0.6);
+    node->declare_parameter<double>("Q_ACC", 5.0);
     node->declare_parameter<double>("COMPENSATION_FACTOR", 0.055);
     node->declare_parameter<double>("VEL_COMPENSATION_FACTOR", 0.917);
     node->declare_parameter<double>("ACC_COMPENSATION_FACTOR", 0.3);

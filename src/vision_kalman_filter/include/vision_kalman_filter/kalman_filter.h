@@ -6,21 +6,21 @@
 
 //卡尔曼滤波器全局配置参数
 namespace KalmanConfig {
-    const double Q_POS = 0.4;      // 位置过程噪声（像素）
-    const double Q_VEL = 0.6;      // 速度过程噪声（像素/秒）
-    const double Q_ACC = 1.2;      // 加速度过程噪声（像素/秒²）
-    const double R_MEAS = 2.0;     // 观测噪声（像素）
+    const double Q_POS = 0.4;      // 位置过程噪声
+    const double Q_VEL = 0.6;      // 速度过程噪声
+    const double Q_ACC = 5;      // 加速度过程噪声
+    const double R_MEAS = 2.0;     // 观测噪声
     
     const float CANNON_CENTER_X = 575.5f;
     const float CANNON_CENTER_Y = 611.5f;
     const float CANNON_RADIUS = 22.9f;
     
-    const float BULLET_SPEED = 600.0f;      // 子弹速度（像素/秒）
+    const float BULLET_SPEED = 600.0f;      // 子弹速度
 }
 
 class KalmanTracker {
 private:
-    double x_;     //预估
+    double x_;   
     double y_;      
     double vx_;     
     double vy_;    
