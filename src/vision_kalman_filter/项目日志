@@ -149,10 +149,11 @@
     加速度为零时
         COMPENSATION_FACTOR: 0.055
         VEL_COMPENSATION_FACTOR: 0.917
-    修改友伤预测逻辑
-
     2199969087
     3689292960 //慢速种子
+    串口名改为可调参数
+    pub完善
+
 
 4.18
     
