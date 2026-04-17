@@ -19,7 +19,7 @@ private:
     bool is_open;          
     
 public:
-    SerialComm(const std::string& port = "/dev/pts/2");
+    SerialComm(const std::string& port = "/dev/pts/7");
     
     ~SerialComm();
     

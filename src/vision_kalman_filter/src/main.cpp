@@ -28,7 +28,7 @@
 #include "vision_kalman_filter/openCV_tools.h"
 #include "vision_kalman_filter/kalman_filter.h"
 #include "vision_kalman_filter/serial_comm.h"
-#include "vision_kalman_filter/msg/serialcom.hpp"
+#include "vision_kalman_filter/msg/serialcommand.hpp"
 
 using namespace vision_kalman_filter;
 using namespace KalmanConfig;
@@ -116,7 +116,8 @@ struct SafetyCheckResult {
 class VisionNode : public rclcpp::Node {
 private:
     std::shared_ptr<ROSImageSubscriber> image_sub_;  
-    //rclcpp::Publisher<vision_kalman_filter::msg::Serialcom>::SharedPtr command_pub;
+    rclcpp::Publisher<vision_kalman_filter::msg::Serialcommand>::SharedPtr command_pub;
+    vision_kalman_filter::msg::Serialcommand com_msg;
     
     openCV_tools cv_tools_;      
     SerialComm serial_comm_;     
@@ -171,10 +172,12 @@ public:
         image_sub_ = std::make_shared<ROSImageSubscriber>(
             std::shared_ptr<rclcpp::Node>(this, [](rclcpp::Node*){})  
         );
-        //command_pub = this->create_publisher<vision_kalman_filter::msg::Serialcom>(
-        //    "control_command",
-        //    10
-        //);
+        command_pub = this->create_publisher<vision_kalman_filter::msg::Serialcommand>(
+            "control_command",
+            10
+        );
+        this->declare_parameter<std::string>("serial_port", "/dev/pts/7");
+        serial_comm_ = SerialComm(this->get_parameter("serial_port").as_string());
         
         serial_comm_ok_ = serial_comm_.open();
         if (!serial_comm_ok_) {
@@ -659,6 +662,11 @@ private:
         smoothed_angle_ = smoothed_angle_ * SMOOTH_FACTOR + 
                          target_angle * (1.0f - SMOOTH_FACTOR);
         
+        com_msg.angle = smoothed_angle_;
+        com_msg.isshout = 1;
+        command_pub->publish(com_msg);
+
+
         serial_comm_.sendTurnCommand(static_cast<int>(smoothed_angle_));
         
         float angle_error = std::abs(smoothed_angle_ - target_angle);
@@ -693,6 +701,9 @@ private:
                 target_lock_counter_ = 0;
             }
         }
+
+        RCLCPP_INFO(this->get_logger(),"\033[31m已发送开火指令\033[0m");
+        com_msg.isshout = 0;
     }
     
     void drawResults(cv::Mat& frame) {
@@ -861,7 +872,7 @@ int main(int argc, char** argv) {
     node->declare_parameter<double>("COMPENSATION_FACTOR", 0.055);
     node->declare_parameter<double>("VEL_COMPENSATION_FACTOR", 0.917);
     node->declare_parameter<double>("ACC_COMPENSATION_FACTOR", 0.3);
-    node->declare_parameter<double>("MIN_TARGET_CONFIDENCE", 0.6);
+    node->declare_parameter<double>("DEFAULT_SERIAL_PORT", 0.6);
     node->run();  
     
     rclcpp::spin(node);  

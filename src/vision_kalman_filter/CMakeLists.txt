@@ -19,7 +19,7 @@ find_package(rosidl_default_generators REQUIRED)
 
 # 添加自定义消息
 rosidl_generate_interfaces(${PROJECT_NAME}
-  "msg/Serialcom.msg"
+  "msg/Serialcommand.msg"
   DEPENDENCIES
     std_msgs  
 )
