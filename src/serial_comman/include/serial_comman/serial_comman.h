@@ -18,7 +18,7 @@
 #include <string>         
 #include "rclcpp/rclcpp.hpp"           // ROS2核心库
 #include "std_msgs/msg/string.hpp"
-#include "serial_comman/msg/serialcom.hpp"
+#include "vision_kalman_filter/msg/serialcommand.hpp"
 
 
 class SerialComm {
@@ -79,9 +79,9 @@ private:
 
     std::mutex mutex_; 
 
-    rclcpp::Subscription<serial_comman::msg::Serialcom>::SharedPtr command_sub;
+    rclcpp::Subscription<vision_kalman_filter::msg::Serialcommand>::SharedPtr command_sub;
 
-    void SerialCallback(const serial_comman::msg::Serialcom::SharedPtr msg);
+    void SerialCallback(const vision_kalman_filter::msg::Serialcommand::SharedPtr msg);
 
 };
 

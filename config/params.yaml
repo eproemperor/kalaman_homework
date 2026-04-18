@@ -8,3 +8,7 @@
     ACC_COMPENSATION_FACTOR: 0.0
     MIN_TARGET_CONFIDENCE: 0.6
     serial_port: "/dev/pts/7"
+
+/serialcomman:
+  ros__parameters:
+    serial_port: "/dev/pts/10"

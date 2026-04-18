@@ -177,7 +177,7 @@ public:
             10
         );
         this->declare_parameter<std::string>("serial_port", "/dev/pts/7");
-        serial_comm_ = SerialComm(this->get_parameter("serial_port").as_string());
+        serial_comm_ = std::make_shared<SerialComm>(this->get_parameter("serial_port").as_string());
         
         serial_comm_ok_ = serial_comm_.open();
         if (!serial_comm_ok_) {
@@ -665,42 +665,6 @@ private:
         com_msg.angle = smoothed_angle_;
         com_msg.isshout = 1;
         command_pub->publish(com_msg);
-
-
-        serial_comm_.sendTurnCommand(static_cast<int>(smoothed_angle_));
-        
-        float angle_error = std::abs(smoothed_angle_ - target_angle);
-        if (angle_error > 180) angle_error = 360 - angle_error;
-        
-        if (angle_error > MAX_ANGLE_ERROR) return;
-        
-        if (target_lock_counter_ < LOCK_FRAMES_REQUIRED) {
-            target_lock_counter_++;
-            return;
-        }
-        
-        std::this_thread::sleep_for(std::chrono::milliseconds(20));
-        
-        SafetyCheckResult quick_safety = performSafetyCheck();
-        if (!quick_safety.is_safe_to_fire) {
-            RCLCPP_WARN(this->get_logger(), "开火前安全检查未通过");
-            return;
-        }
-        
-        // 发送开火命令
-        if (serial_comm_.sendFireCommand()) {
-            last_fire_time_ = now;  
-            
-            target.hit_count++;
-            
-            if (target.hit_count >= HITS_TO_KILL) {
-                tracker_destroyed_[current_target_id_] = true;
-                target.is_active = false;
-                
-                current_target_id_ = -1;
-                target_lock_counter_ = 0;
-            }
-        }
 
         RCLCPP_INFO(this->get_logger(),"\033[31m已发送开火指令\033[0m");
         com_msg.isshout = 0;

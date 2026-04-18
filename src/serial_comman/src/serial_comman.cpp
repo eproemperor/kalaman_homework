@@ -145,13 +145,18 @@ bool SerialComm::sendFireCommand() {
 SerialComman::SerialComman() : Node("serialcomman"){
 
     //command_pub_ = this->create_pubilsher<>()
-    command_sub = this->create_subscription<serial_comman::msg::Serialcom>(
+    command_sub = this->create_subscription<vision_kalman_filter::msg::Serialcommand>(
         "control_command",
         10,
         std::bind(&SerialComman::SerialCallback,this,std::placeholders::_1)
     );
+    
+
+    this->declare_parameter<std::string>("serial_port", "/dev/pts/7");
+    serial_comm_ = std::make_shared<SerialComm>(this->get_parameter("serial_port").as_string());
 
     RCLCPP_INFO(this->get_logger(),"串口发送接收节点已启动");
+
 
     Serial_ok_ = Serial_.open();
         if (!Serial_ok_) {
@@ -162,7 +167,7 @@ SerialComman::SerialComman() : Node("serialcomman"){
 
 }
 
-void SerialComman::SerialCallback(const serial_comman::msg::Serialcom::SharedPtr msg){
+void SerialComman::SerialCallback(const vision_kalman_filter::msg::Serialcommand::SharedPtr msg){
         RCLCPP_INFO(
             this->get_logger(),
             "收到开火信息，方向：%f",

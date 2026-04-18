@@ -10,13 +10,9 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
-find_package(rosidl_default_generators REQUIRED)
 find_package(builtin_interfaces REQUIRED)
+find_package(vision_kalman_filter REQUIRED)  
 
-rosidl_generate_interfaces(${PROJECT_NAME}
-  "msg/Serialcom.msg"
-  DEPENDENCIES builtin_interfaces std_msgs
-)
 
 # 包含目录
 include_directories(
@@ -31,10 +27,7 @@ ament_target_dependencies(serial_comman_node
   rclcpp
   std_msgs
   builtin_interfaces
-)
-
-target_link_libraries(serial_comman_node
-  ${PROJECT_NAME}__rosidl_typesupport_cpp
+  vision_kalman_filter 
 )
 
 install(TARGETS serial_comman_node
@@ -50,7 +43,7 @@ ament_export_dependencies(
   rclcpp
   std_msgs
   builtin_interfaces
-  rosidl_default_runtime
+  vision_kalman_filter  
 )
 
 ament_package()
