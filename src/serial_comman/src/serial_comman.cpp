@@ -181,6 +181,7 @@ void SerialComman::SerialCallback(const vision_kalman_filter::msg::Serialcommand
         isshout = msg->isshout;
 
         Serial_.sendTurnCommand(angle);
+        usleep(10000);
         Serial_.sendFireCommand();
 }
 
