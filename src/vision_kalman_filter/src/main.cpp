@@ -177,7 +177,7 @@ public:
             10
         );
         this->declare_parameter<std::string>("serial_port", "/dev/pts/7");
-        serial_comm_ = std::make_shared<SerialComm>(this->get_parameter("serial_port").as_string());
+        serial_comm_ = SerialComm(this->get_parameter("serial_port").as_string());
         
         serial_comm_ok_ = serial_comm_.open();
         if (!serial_comm_ok_) {

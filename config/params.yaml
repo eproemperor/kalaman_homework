@@ -11,4 +11,4 @@
 
 /serialcomman:
   ros__parameters:
-    serial_port: "/dev/pts/10"
+    serial_port: "/dev/pts/2"
