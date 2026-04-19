@@ -99,7 +99,6 @@ double KalmanTracker::process(const cv::Point2f& measured_pos) {
             double inst_ax = (inst_vx - vx_) / dt_vel;
             double inst_ay = (inst_vy - vy_) / dt_vel;
             
-            const double alpha = 0.2;  // 加速度滤波系数
             smoothed_ax_ = smoothed_ax_ * (1 - alpha) + inst_ax * alpha;
             smoothed_ay_ = smoothed_ay_ * (1 - alpha) + inst_ay * alpha;
             

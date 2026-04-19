@@ -2,10 +2,11 @@
   ros__parameters:
     Q_POS: 5.4
     Q_VEL: 7.6
-    Q_ACC: 100.5
+    Q_ACC: 10.5
     COMPENSATION_FACTOR: 0.0
     VEL_COMPENSATION_FACTOR: 0.0
     ACC_COMPENSATION_FACTOR: 0.0
+    alpha: 0.14
     MIN_TARGET_CONFIDENCE: 0.6
     serial_port: "/dev/pts/7"
 

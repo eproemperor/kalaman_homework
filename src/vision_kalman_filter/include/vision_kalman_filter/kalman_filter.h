@@ -64,6 +64,8 @@ private:
     double smoothed_ay_;  
     int acc_samples_;     
     
+    const double alpha = 0.2;  // 加速度滤波系数
+
 public:
     int invalid_frames;
 
