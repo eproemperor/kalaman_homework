@@ -666,7 +666,7 @@ private:
         com_msg.isshout = 1;
         command_pub->publish(com_msg);
 
-        RCLCPP_INFO(this->get_logger(),"\033[31m已发送开火指令\033[0m");
+        //RCLCPP_INFO(this->get_logger(),"\033[31m已发送开火指令\033[0m");
         com_msg.isshout = 0;
     }
     

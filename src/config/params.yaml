@@ -1,0 +1,14 @@
+/vision_node:
+  ros__parameters:
+    Q_POS: 10.4
+    Q_VEL: 7.6
+    Q_ACC: 15.5
+    COMPENSATION_FACTOR: 0.0
+    VEL_COMPENSATION_FACTOR: 0.0
+    ACC_COMPENSATION_FACTOR: 0.0
+    MIN_TARGET_CONFIDENCE: 0.6
+    serial_port: "/dev/pts/7"
+
+/serialcomman:
+  ros__parameters:
+    serial_port: "/dev/pts/2"
