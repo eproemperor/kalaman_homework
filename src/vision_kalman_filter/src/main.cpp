@@ -443,7 +443,9 @@ private:
             
             if (occluded) {
                 target.updateConfidence(target.confidence * 0.7f);
+                tracker_lost_frames_[id]++;
             }
+            //else {tracker_lost_frames_[id] = 0;}
         }
     }
     
@@ -789,12 +791,11 @@ private:
     
     void outputStatus() {
         RCLCPP_INFO(this->get_logger(), 
-                   "帧:%d 敌方:%zu 友方:%zu 当前目标:%s 锁定:%d 安全:%s",
+                   "帧:%d 敌方:%zu 友方:%zu 当前目标:%s 锁定:%d ",
                    frame_count_, 
                    enemy_target_ids_.size(),
                    friendly_target_ids_.size(),
-                   current_target_id_ >= 0 ? std::to_string(current_target_id_).c_str() : "无",
-                   last_safety_check_.is_safe_to_fire ? "是" : "否");
+                   current_target_id_ >= 0 ? std::to_string(current_target_id_).c_str() : "无");
         
         if (current_target_id_ >= 0) {
             TargetInfo& target = target_info_[current_target_id_];
