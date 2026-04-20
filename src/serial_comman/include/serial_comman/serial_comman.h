@@ -29,7 +29,7 @@ private:
 
     
 public:
-    SerialComm(const std::string& port = "/dev/pts/4");
+    SerialComm(const std::string& port = "/dev/pts/2");
     
     ~SerialComm();
     
@@ -74,7 +74,7 @@ private:
     
     std::shared_ptr<SerialComm> serial_comm_;
 
-    SerialComm Serial_;
+    //SerialComm Serial_;
     bool Serial_ok_{false}; 
 
     std::mutex mutex_; 

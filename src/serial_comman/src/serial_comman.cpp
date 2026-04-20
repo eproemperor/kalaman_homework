@@ -152,13 +152,13 @@ SerialComman::SerialComman() : Node("serialcomman"){
     );
     
 
-    this->declare_parameter<std::string>("serial", "/dev/pts/4");
+    this->declare_parameter<std::string>("serial", "/dev/pts/2");
     serial_comm_ = std::make_shared<SerialComm>(this->get_parameter("serial").as_string());
 
     RCLCPP_INFO(this->get_logger(),"串口发送接收节点已启动");
 
 
-    Serial_ok_ = Serial_.open();
+    Serial_ok_ = serial_comm_->open();
         if (!Serial_ok_) {
             RCLCPP_WARN(this->get_logger(), "串口打开失败，请检查权限");
         } else {
@@ -180,9 +180,9 @@ void SerialComman::SerialCallback(const vision_kalman_filter::msg::Serialcommand
         angle = msg->angle;
         isshout = msg->isshout;
 
-        Serial_.sendTurnCommand(angle);
+        serial_comm_->sendTurnCommand(angle);
         usleep(10000);
-        Serial_.sendFireCommand();
+        serial_comm_->sendFireCommand();
         usleep(10000);
 }
 
