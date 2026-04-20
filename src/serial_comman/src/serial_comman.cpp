@@ -168,12 +168,12 @@ SerialComman::SerialComman() : Node("serialcomman"){
 }
 
 void SerialComman::SerialCallback(const vision_kalman_filter::msg::Serialcommand::SharedPtr msg){
-        RCLCPP_INFO(
-            this->get_logger(),
-            "收到开火信息，方向：%f,开火:%d",
-            msg->angle,
-            msg->isshout
-        );
+        //RCLCPP_INFO(
+        //    this->get_logger(),
+        //    "收到开火信息，方向：%f,开火:%d",
+        //    msg->angle,
+        //    msg->isshout
+        //);
 
         std::lock_guard<std::mutex> lock(mutex_);
 

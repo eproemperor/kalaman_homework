@@ -7,7 +7,7 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument(
             'serial',  
-            default_value='/dev/pts/5',
+            default_value='/dev/pts/4',
             description='Serial port device'
         ),
         DeclareLaunchArgument(
