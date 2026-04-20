@@ -29,7 +29,7 @@ private:
 
     
 public:
-    SerialComm(const std::string& port = "/dev/pts/2");
+    SerialComm(const std::string& port = "/dev/pts/4");
     
     ~SerialComm();
     

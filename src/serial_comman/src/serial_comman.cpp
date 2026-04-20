@@ -152,8 +152,8 @@ SerialComman::SerialComman() : Node("serialcomman"){
     );
     
 
-    this->declare_parameter<std::string>("serial_port", "/dev/pts/7");
-    serial_comm_ = std::make_shared<SerialComm>(this->get_parameter("serial_port").as_string());
+    this->declare_parameter<std::string>("serial", "/dev/pts/4");
+    serial_comm_ = std::make_shared<SerialComm>(this->get_parameter("serial").as_string());
 
     RCLCPP_INFO(this->get_logger(),"串口发送接收节点已启动");
 
@@ -168,12 +168,12 @@ SerialComman::SerialComman() : Node("serialcomman"){
 }
 
 void SerialComman::SerialCallback(const vision_kalman_filter::msg::Serialcommand::SharedPtr msg){
-        //RCLCPP_INFO(
-        //    this->get_logger(),
-        //    "收到开火信息，方向：%f,开火:%d",
-        //    msg->angle,
-        //    msg->isshout
-        //);
+        RCLCPP_INFO(
+            this->get_logger(),
+            "收到开火信息，方向：%f,开火:%d",
+            msg->angle,
+            msg->isshout
+        );
 
         std::lock_guard<std::mutex> lock(mutex_);
 
@@ -183,6 +183,7 @@ void SerialComman::SerialCallback(const vision_kalman_filter::msg::Serialcommand
         Serial_.sendTurnCommand(angle);
         usleep(10000);
         Serial_.sendFireCommand();
+        usleep(10000);
 }
 
 SerialComman::~SerialComman(){
