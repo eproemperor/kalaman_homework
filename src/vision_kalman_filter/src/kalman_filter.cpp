@@ -130,7 +130,7 @@ double KalmanTracker::process(const cv::Point2f& measured_pos) {
     // s = s0 + v0*t + 0.5*a*t²
     double future_x = x_ + vx_ * flight_time + 0.5 * ax_ * flight_time * flight_time;
     double future_y = y_ + vy_ * flight_time + 0.5 * ay_ * flight_time * flight_time;
-    
+        
     if (y_ < 300) {
         double extra_factor = 1.0 + (cannon_y_ - y_) / 300.0;
         extra_factor = std::min(extra_factor, 2.0);
@@ -224,9 +224,6 @@ void KalmanTracker::reset(const cv::Point2f& init_pos) {
 }
 
 void KalmanTracker::predict() {
-    // 位置预测: x = x + vx*dt + 0.5*ax*dt²
-    // 速度预测: vx = vx + ax*dt
-    // 加速度预测: ax = ax (恒定加速度模型)
     
     double dt2_half = 0.5 * dt2_;
     
